@@ -9,7 +9,7 @@ class CategoryMealsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Text('a'),
+        child: Text('A'),
       ),
     );
   }
