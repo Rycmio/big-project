@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../screens/categories_screens.dart';
 import '../screens/category_meals_screen.dart';
 
 void main() {
@@ -13,11 +12,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'KasirQ',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        canvasColor: Color(0xFFF1F2F3),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple)
+            .copyWith(secondary: Colors.deepOrange),
+        fontFamily: 'Lato',
       ),
-      home: const CategoriesScreen(),
+      home: const CategoryMealsScreen(),
       routes: {
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
       },
