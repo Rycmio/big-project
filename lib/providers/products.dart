@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
 import './product.dart';
 
-class Products {
-  static List<Product> items = [
+class Products with ChangeNotifier {
+  List<Product> _items = [
     Product(
       id: 'food1',
       imageUrl:
@@ -9,7 +11,7 @@ class Products {
       name: 'Bakso',
       price: 15000,
       status: true,
-      kindOfFood: KindOfFood.Food,
+      category: Category.Food,
     ),
     Product(
       id: 'food2',
@@ -18,7 +20,7 @@ class Products {
       name: 'Es Jeruk Kecil',
       price: 5000,
       status: true,
-      kindOfFood: KindOfFood.Drinks,
+      category: Category.Drinks,
     ),
     Product(
       id: 'food3',
@@ -27,7 +29,15 @@ class Products {
       name: 'Es Serut Matcha',
       price: 10000,
       status: true,
-      kindOfFood: KindOfFood.Desert,
+      category: Category.Dessert,
     ),
   ];
+
+  List<Product> get items {
+    return [..._items];
+  }
+
+  List<Product> filterProduct(Category category) {
+    return _items.where((product) => category == product.category).toList();
+  }
 }

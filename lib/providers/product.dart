@@ -1,17 +1,19 @@
-enum KindOfFood {
+import 'package:flutter/material.dart';
+
+enum Category {
   Food,
   Drinks,
-  Desert,
+  Dessert,
 }
 
-class Product {
+class Product with ChangeNotifier {
   final String id;
   final String imageUrl;
   final String name;
   final double price;
   bool status;
   bool serve;
-  final KindOfFood kindOfFood;
+  final Category category;
 
   Product({
     required this.id,
@@ -20,6 +22,6 @@ class Product {
     required this.price,
     this.status = true,
     this.serve = false,
-    required this.kindOfFood,
+    required this.category,
   });
 }

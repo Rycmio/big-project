@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/cart.dart';
+import '../providers/product.dart';
 
 class ProductItem extends StatefulWidget {
-  final String id;
-  final String name;
-  final String imageUrl;
-  final double price;
-  bool status;
+  // final String id;
+  // final String name;
+  // final String imageUrl;
+  // final double price;
+  // bool status;
 
-  ProductItem({
-    Key? key,
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    required this.price,
-    this.status = true,
-  }) : super(key: key);
+  // ProductItem({
+  //   Key? key,
+  //   required this.id,
+  //   required this.name,
+  //   required this.imageUrl,
+  //   required this.price,
+  //   this.status = true,
+  // }) : super(key: key);
 
   @override
   State<ProductItem> createState() => _ProductItemState();
 }
 
 class _ProductItemState extends State<ProductItem> {
+  int quantity = 1;
+
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context, listen: false);
+    final carts = Provider.of<Cart>(context, listen: false);
     return Padding(
-      padding: const EdgeInsets.only(left: 6, right: 6),
+      padding: const EdgeInsets.only(left: 6, right: 6, top: 6),
       child: Column(
         children: [
           Stack(
@@ -38,7 +46,7 @@ class _ProductItemState extends State<ProductItem> {
                   height: 180,
                   width: 390,
                   child: Image.network(
-                    widget.imageUrl,
+                    product.imageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -59,9 +67,9 @@ class _ProductItemState extends State<ProductItem> {
                           style: TextStyle(color: Colors.white, fontSize: 11),
                         ),
                         Switch(
-                          value: widget.status,
+                          value: product.status,
                           onChanged: (newValue) {
-                            widget.status = newValue;
+                            product.status = newValue;
                             setState(() {});
                           },
                           activeColor: Theme.of(context).colorScheme.primary,
@@ -79,7 +87,7 @@ class _ProductItemState extends State<ProductItem> {
                   color: Colors.black54,
                   padding: const EdgeInsets.all(3),
                   child: Text(
-                    widget.name,
+                    product.name,
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -96,12 +104,20 @@ class _ProductItemState extends State<ProductItem> {
             color: Colors.black12,
             child: Column(
               children: [
-                Text('Rp ${widget.price}'),
+                Text('Rp ${product.price}'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          if (quantity <= 1) {
+                            quantity = 1;
+                          } else {
+                            quantity--;
+                          }
+                        });
+                      },
                       icon: Icon(Icons.remove_circle),
                       iconSize: 25,
                     ),
@@ -111,19 +127,30 @@ class _ProductItemState extends State<ProductItem> {
                       color: Colors.white,
                       child: Center(
                         child: Text(
-                          '1',
+                          quantity.toString(),
                         ),
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          quantity++;
+                        });
+                      },
                       icon: Icon(Icons.add_circle),
                       iconSize: 25,
                     ),
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    carts.addItem(
+                      product.id,
+                      product.name,
+                      product.price,
+                      quantity,
+                    );
+                  },
                   child: Text('Add'),
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size.fromHeight(30),

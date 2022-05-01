@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../screens/manage_product_screen.dart';
+import '../screens/orders_screen.dart';
+
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
 
@@ -22,18 +25,20 @@ class MainDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.stacked_bar_chart),
-            title: Text('Laporan'),
+            leading: Icon(Icons.category),
+            title: Text('Produk'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed('/');
+              Navigator.of(context)
+                  .pushReplacementNamed(ManageProductScreen.routeName);
             },
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.category),
-            title: Text('Atur Produk'),
+            leading: Icon(Icons.stacked_bar_chart),
+            title: Text('Laporan'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed('/');
+              Navigator.of(context)
+                  .pushReplacementNamed(OrdersScreen.routeName);
             },
           ),
         ],

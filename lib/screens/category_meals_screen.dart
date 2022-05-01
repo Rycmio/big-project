@@ -1,9 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../providers/products.dart';
-import '../widgets/product_item.dart';
 import '../widgets/main_drawer.dart';
+import '../widgets/products_gird.dart';
 import '../widgets/badge.dart';
+import '../screens/cart_screen.dart';
+import '../providers/product.dart' as cat;
+import '../providers/cart.dart';
 
 class CategoryMealsScreen extends StatefulWidget {
   static const routeName = '/category-meals';
@@ -44,16 +48,21 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen>
                       _globalKey.currentState!.openDrawer();
                     }),
                 Spacer(),
-                Badge(
+                Consumer<Cart>(
+                  builder: (_, cart, ch) => Badge(
+                    child: ch!,
+                    value: cart.itemCount.toString(),
+                  ),
                   child: IconButton(
                     iconSize: 28,
                     icon: Icon(
                       Icons.shopping_bag,
                       color: Colors.black54,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(CartScreen.routeName);
+                    },
                   ),
-                  value: '0',
                 ),
                 PopupMenuButton(
                   icon: Icon(
@@ -75,6 +84,7 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen>
             height: 5,
           ),
           Container(
+            margin: const EdgeInsets.only(bottom: 5),
             child: Align(
               alignment: Alignment.centerLeft,
               child: TabBar(
@@ -87,7 +97,7 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen>
                 tabs: [
                   Tab(text: 'Makanan'),
                   Tab(text: 'Minuman'),
-                  Tab(text: 'Desert')
+                  Tab(text: 'Dessert')
                 ],
               ),
             ),
@@ -98,59 +108,14 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen>
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  GridView.builder(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: MediaQuery.of(context).size.width /
-                          MediaQuery.of(context).size.height /
-                          0.94,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 0,
-                    ),
-                    itemBuilder: (ctx, i) => ProductItem(
-                      id: Products.items[i].id,
-                      name: Products.items[i].name,
-                      imageUrl: Products.items[i].imageUrl,
-                      price: Products.items[i].price,
-                      status: Products.items[i].status,
-                    ),
-                    itemCount: Products.items.length,
+                  ProductsGrid(
+                    categoryProduct: cat.Category.Food,
                   ),
-                  GridView.builder(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: MediaQuery.of(context).size.width /
-                          MediaQuery.of(context).size.height /
-                          0.94,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 0,
-                    ),
-                    itemBuilder: (ctx, i) => ProductItem(
-                      id: Products.items[i].id,
-                      name: Products.items[i].name,
-                      imageUrl: Products.items[i].imageUrl,
-                      price: Products.items[i].price,
-                      status: Products.items[i].status,
-                    ),
-                    itemCount: Products.items.length,
+                  ProductsGrid(
+                    categoryProduct: cat.Category.Drinks,
                   ),
-                  GridView.builder(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: MediaQuery.of(context).size.width /
-                          MediaQuery.of(context).size.height /
-                          0.94,
-                      crossAxisSpacing: 0,
-                      mainAxisSpacing: 0,
-                    ),
-                    itemBuilder: (ctx, i) => ProductItem(
-                      id: Products.items[i].id,
-                      name: Products.items[i].name,
-                      imageUrl: Products.items[i].imageUrl,
-                      price: Products.items[i].price,
-                      status: Products.items[i].status,
-                    ),
-                    itemCount: Products.items.length,
+                  ProductsGrid(
+                    categoryProduct: cat.Category.Dessert,
                   ),
                 ],
               ),
