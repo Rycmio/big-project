@@ -150,6 +150,19 @@ class _ProductItemState extends State<ProductItem> {
                       product.price,
                       quantity,
                     );
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Menu ditambahkan!'),
+                        duration: Duration(seconds: 3),
+                        action: SnackBarAction(
+                          label: 'UNDO',
+                          onPressed: () {
+                            carts.removeSingleItem(product.id, quantity);
+                          },
+                        ),
+                      ),
+                    );
                   },
                   child: Text('Add'),
                   style: ElevatedButton.styleFrom(
