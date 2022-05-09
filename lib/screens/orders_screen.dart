@@ -46,11 +46,21 @@ class OrdersScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: orderData.orders.length,
-              itemBuilder: (ctx, i) => OrderItem(order: orderData.orders[i]),
-            ),
+            child: orderData.orders.length == 0
+                ? Center(
+                    child: Text(
+                      'Belum ada laporan!',
+                      style: TextStyle(
+                        color: Colors.black54,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: orderData.orders.length,
+                    itemBuilder: (ctx, i) =>
+                        OrderItem(order: orderData.orders[i]),
+                  ),
           ),
         ],
       ),

@@ -34,15 +34,24 @@ class CartScreen extends StatelessWidget {
               child: Container(
                 width: double.maxFinite,
                 height: MediaQuery.of(context).size.height / 1.6,
-                child: ListView.builder(
-                  itemBuilder: (context, i) => CartItem(
-                      id: cart.items.values.toList()[i].id,
-                      productId: cart.items.keys.toList()[i],
-                      price: cart.items.values.toList()[i].price,
-                      quantity: cart.items.values.toList()[i].quantity,
-                      name: cart.items.values.toList()[i].name),
-                  itemCount: cart.items.length,
-                ),
+                child: cart.items.length == 0
+                    ? Center(
+                        child: Text(
+                          'Belum ada Pesanan!',
+                          style: TextStyle(
+                            color: Colors.black54,
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemBuilder: (context, i) => CartItem(
+                            id: cart.items.values.toList()[i].id,
+                            productId: cart.items.keys.toList()[i],
+                            price: cart.items.values.toList()[i].price,
+                            quantity: cart.items.values.toList()[i].quantity,
+                            name: cart.items.values.toList()[i].name),
+                        itemCount: cart.items.length,
+                      ),
               ),
             ),
             SizedBox(height: 16),

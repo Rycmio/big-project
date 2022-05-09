@@ -52,14 +52,23 @@ class ManageProductScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemBuilder: (_, i) => ManageProductItem(
-                nama: products[i].name,
-                imageUrl: products[i].imageUrl,
-              ),
-              itemCount: products.length,
-            ),
+            child: products.length <= 0
+                ? Center(
+                    child: Text('Tidak ada data'),
+                  )
+                : ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (_, i) => Column(
+                      children: [
+                        ManageProductItem(
+                          name: products[i].name,
+                          image: products[i].image,
+                        ),
+                        Divider(),
+                      ],
+                    ),
+                    itemCount: products.length,
+                  ),
           ),
         ],
       ),

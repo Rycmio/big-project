@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
-import '../providers/product.dart';
+import '../utils/category_enum.dart';
 import './product_item.dart';
 
 class ProductsGrid extends StatelessWidget {

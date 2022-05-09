@@ -1,13 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class ManageProductItem extends StatelessWidget {
-  final String nama;
-  final String imageUrl;
+  final String? name;
+  final File? image;
 
   const ManageProductItem({
     Key? key,
-    required this.nama,
-    required this.imageUrl,
+    required this.name,
+    required this.image,
   }) : super(key: key);
 
   @override
@@ -15,9 +17,9 @@ class ManageProductItem extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 5, left: 5),
       child: ListTile(
-        title: Text(nama),
+        title: Text(name!),
         leading: CircleAvatar(
-          backgroundImage: NetworkImage(imageUrl),
+          backgroundImage: FileImage(image!),
         ),
         trailing: Container(
           width: 100,

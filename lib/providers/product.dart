@@ -1,23 +1,20 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-enum Category {
-  Food,
-  Drinks,
-  Dessert,
-}
+import 'package:flutter/material.dart';
+import '../utils/category_enum.dart';
 
 class Product with ChangeNotifier {
-  final String id;
-  final String imageUrl;
-  final String name;
+  final String? id;
+  final File? image;
+  final String? name;
   final double price;
   bool status;
   bool serve;
-  final Category category;
+  final Category? category;
 
   Product({
     required this.id,
-    required this.imageUrl,
+    required this.image,
     required this.name,
     required this.price,
     this.status = true,

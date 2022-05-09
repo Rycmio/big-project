@@ -45,8 +45,8 @@ class _ProductItemState extends State<ProductItem> {
                 child: Container(
                   height: 180,
                   width: 390,
-                  child: Image.network(
-                    product.imageUrl,
+                  child: Image.file(
+                    product.image!,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -87,7 +87,7 @@ class _ProductItemState extends State<ProductItem> {
                   color: Colors.black54,
                   padding: const EdgeInsets.all(3),
                   child: Text(
-                    product.name,
+                    product.name!,
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -146,7 +146,7 @@ class _ProductItemState extends State<ProductItem> {
                   onPressed: () {
                     carts.addItem(
                       product.id,
-                      product.name,
+                      product.name!,
                       product.price,
                       quantity,
                     );
@@ -158,7 +158,7 @@ class _ProductItemState extends State<ProductItem> {
                         action: SnackBarAction(
                           label: 'UNDO',
                           onPressed: () {
-                            carts.removeSingleItem(product.id, quantity);
+                            carts.removeSingleItem(product.id!, quantity);
                           },
                         ),
                       ),

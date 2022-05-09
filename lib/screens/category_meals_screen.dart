@@ -6,8 +6,8 @@ import '../widgets/main_drawer.dart';
 import '../widgets/products_gird.dart';
 import '../widgets/badge.dart';
 import '../screens/cart_screen.dart';
-import '../providers/product.dart' as cat;
 import '../providers/cart.dart';
+import '../utils/category_enum.dart' as cat;
 
 class CategoryMealsScreen extends StatefulWidget {
   static const routeName = '/category-meals';
