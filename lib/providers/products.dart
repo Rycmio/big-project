@@ -40,6 +40,10 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
+  Product findById(String id) {
+    return _items.firstWhere((prod) => prod.id == id);
+  }
+
   List<Product> filterProduct(Category category) {
     return _items.where((product) => category == product.category).toList();
   }
@@ -54,5 +58,47 @@ class Products with ChangeNotifier {
     );
     _items.add(newProduct);
     notifyListeners();
+  }
+
+  void updateProduct(
+      String? id, Product product, Category category, File image) {
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _items[prodIndex] = Product(
+          id: id,
+          image: image,
+          name: product.name,
+          price: product.price,
+          category: category);
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
+
+  Future deleteProduct(String? id, BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Yakin akan dihapus?'),
+        content: Text('Menu akan dihapus permanen!'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              _items.removeWhere((prod) => prod.id == id);
+              notifyListeners();
+            },
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    );
   }
 }

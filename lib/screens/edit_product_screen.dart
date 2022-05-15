@@ -20,8 +20,17 @@ class EditProductScreen extends StatefulWidget {
 class _EditProductScreenState extends State<EditProductScreen> {
   final _dropDownController = TextEditingController();
   final _form = GlobalKey<FormState>();
+  GlobalKey<ScaffoldMessengerState> contextKey =
+      GlobalKey<ScaffoldMessengerState>();
   File? _pickedImage;
   String? _valueMenu;
+  var _isInit = true;
+  var _initValues = {
+    'name': '',
+    'price': '',
+    'image': null,
+    'category': null,
+  };
   var _editedProduct = Product(
     id: null,
     name: '',
@@ -35,12 +44,49 @@ class _EditProductScreenState extends State<EditProductScreen> {
     'Dessert',
   ];
 
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      if (ModalRoute.of(context)!.settings.arguments != null) {
+        final productId = ModalRoute.of(context)?.settings.arguments as String;
+        if (productId.isNotEmpty) {
+          final product =
+              Provider.of<Products>(context, listen: false).findById(productId);
+          _editedProduct = product;
+
+          _initValues = {
+            'name': _editedProduct.name,
+            'price': _editedProduct.price.toString(),
+            'image': _editedProduct.image!.path,
+            'category': null,
+          };
+
+          _dropDownController.text = _editedProduct.category.toString();
+          if (_editedProduct.category.toString() == 'Category.Food') {
+            _dropDownController.text = 'Makanan';
+          } else if (_editedProduct.category.toString() == 'Category.Drinks') {
+            _dropDownController.text = 'Minuman';
+          } else if (_editedProduct.category.toString() == 'Category.Dessert') {
+            _dropDownController.text = 'Dessert';
+          }
+        }
+      }
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _dropDownController.dispose();
+    super.dispose();
+  }
+
   void _selectImage(File pickedImage) {
     _pickedImage = pickedImage;
   }
 
   void _saveData() {
-    print('its work');
     Category _category = Category.Food;
     if (_dropDownController.text == 'Makanan') {
       _category = Category.Food;
@@ -49,12 +95,31 @@ class _EditProductScreenState extends State<EditProductScreen> {
     } else if (_dropDownController.text == 'Dessert') {
       _category = Category.Dessert;
     }
+    final isValid = _form.currentState!.validate();
+    if (!isValid || _dropDownController.text.isEmpty || _pickedImage == null) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Mohon untuk mengisi seluruh data dengan tepat!',
+            style: TextStyle(color: Colors.redAccent),
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
     _form.currentState!.save();
-    Provider.of<Products>(context, listen: false).addProduct(
-      _editedProduct,
-      _category,
-      _pickedImage!,
-    );
+    if (_editedProduct.id != null) {
+      Provider.of<Products>(context, listen: false).updateProduct(
+          _editedProduct.id, _editedProduct, _category, _pickedImage!);
+    } else {
+      Provider.of<Products>(context, listen: false).addProduct(
+        _editedProduct,
+        _category,
+        _pickedImage!,
+      );
+    }
     Navigator.of(context).pop();
   }
 
@@ -91,11 +156,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
               ),
               SizedBox(height: 16),
               TextFormField(
+                initialValue: _initValues['name'],
                 decoration: InputDecoration(
                   labelText: 'Nama Menu',
                   hintText: 'Masukkan Nama Menu',
                 ),
                 textInputAction: TextInputAction.next,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Nama Menu Tidak Boleh Kosong!';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = Product(
                     id: _editedProduct.id,
@@ -108,12 +180,25 @@ class _EditProductScreenState extends State<EditProductScreen> {
               ),
               SizedBox(height: 16),
               TextFormField(
+                initialValue: _initValues['price'],
                 decoration: InputDecoration(
                   labelText: 'Harga',
                   hintText: 'Masukkan Harga Menu',
                 ),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Harga Tidak Boleh Kosong!';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return 'Harga Tidak Boleh Memiliki Huruf!';
+                  }
+                  if (double.parse(value) < 500) {
+                    return 'Silahkan Masukkan Harga Diatas 500 Rupiah!';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = Product(
                     id: _editedProduct.id,

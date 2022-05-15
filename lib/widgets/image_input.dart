@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspath;
+import 'package:provider/provider.dart';
+
+import '../providers/products.dart';
 
 class ImageInput extends StatefulWidget {
   final Function onSelectImage;
@@ -18,6 +21,24 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   File? _storedImage;
+  var _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      if (ModalRoute.of(context)!.settings.arguments != null) {
+        final productId = ModalRoute.of(context)?.settings.arguments as String;
+        if (productId.isNotEmpty) {
+          final product =
+              Provider.of<Products>(context, listen: false).findById(productId);
+          _storedImage = product.image;
+          widget.onSelectImage(product.image);
+        }
+      }
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   Future<void> _takePicture(ImageSource source) async {
     final picker = ImagePicker();
