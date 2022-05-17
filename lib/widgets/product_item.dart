@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/cart.dart';
 import '../providers/product.dart';
@@ -26,6 +27,10 @@ class ProductItem extends StatefulWidget {
 
 class _ProductItemState extends State<ProductItem> {
   int quantity = 1;
+  final formatNumber = NumberFormat.simpleCurrency(
+    decimalDigits: 0,
+    locale: 'id_ID',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -104,71 +109,96 @@ class _ProductItemState extends State<ProductItem> {
             color: Colors.black12,
             child: Column(
               children: [
-                Text('Rp ${product.price}'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          if (quantity <= 1) {
-                            quantity = 1;
-                          } else {
-                            quantity--;
-                          }
-                        });
-                      },
-                      icon: Icon(Icons.remove_circle),
-                      iconSize: 25,
-                    ),
-                    Container(
-                      width: 40,
-                      height: 30,
-                      color: Colors.white,
-                      child: Center(
-                        child: Text(
-                          quantity.toString(),
+                Text('${formatNumber.format(product.price)}'),
+                product.status
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (quantity <= 1) {
+                                  quantity = 1;
+                                } else {
+                                  quantity--;
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.remove_circle),
+                            iconSize: 25,
+                          ),
+                          Container(
+                            width: 40,
+                            height: 30,
+                            color: Colors.white,
+                            child: Center(
+                              child: Text(
+                                quantity.toString(),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                quantity++;
+                              });
+                            },
+                            icon: Icon(Icons.add_circle),
+                            iconSize: 25,
+                          ),
+                        ],
+                      )
+                    : Text(
+                        'stok habis',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          quantity++;
-                        });
-                      },
-                      icon: Icon(Icons.add_circle),
-                      iconSize: 25,
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    carts.addItem(
-                      product.id,
-                      product.name!,
-                      product.price,
-                      quantity,
-                    );
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Menu ditambahkan!'),
-                        duration: Duration(seconds: 3),
-                        action: SnackBarAction(
-                          label: 'UNDO',
-                          onPressed: () {
-                            carts.removeSingleItem(product.id!, quantity);
-                          },
+                product.status
+                    ? ElevatedButton(
+                        onPressed: () {
+                          carts.addItem(
+                            product.id,
+                            product.name!,
+                            product.price,
+                            quantity,
+                          );
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Menu ditambahkan!'),
+                              duration: Duration(seconds: 3),
+                              action: SnackBarAction(
+                                label: 'UNDO',
+                                onPressed: () {
+                                  carts.removeSingleItem(product.id!, quantity);
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        child: Text('Tambah'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.fromHeight(30),
+                        ),
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Stok Habis!'),
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                        },
+                        child: Text('Habis'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size.fromHeight(30),
+                          primary: Colors.grey,
                         ),
                       ),
-                    );
-                  },
-                  child: Text('Add'),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(30),
-                  ),
-                ),
               ],
             ),
           )

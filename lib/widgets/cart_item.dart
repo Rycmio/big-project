@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/cart.dart';
 
 class CartItem extends StatelessWidget {
   final String id;
   final String productId;
-  final double price;
+  final int price;
   final int quantity;
   final String name;
 
@@ -21,6 +22,11 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatNumber = NumberFormat.simpleCurrency(
+      decimalDigits: 0,
+      locale: 'id_ID',
+    );
+
     return Dismissible(
       key: ValueKey(id),
       background: Container(
@@ -77,13 +83,13 @@ class CartItem extends StatelessWidget {
                 padding: const EdgeInsets.all(5),
                 child: FittedBox(
                   child: Text(
-                    'Rp $price',
+                    formatNumber.format(price),
                   ),
                 ),
               ),
             ),
             title: Text(name),
-            subtitle: Text('Total: Rp${price * quantity}'),
+            subtitle: Text('Total: ${formatNumber.format(price) * quantity}'),
             trailing: Text('$quantity x'),
           ),
         ),

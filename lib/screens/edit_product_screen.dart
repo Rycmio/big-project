@@ -204,7 +204,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     id: _editedProduct.id,
                     image: _editedProduct.image,
                     name: _editedProduct.name,
-                    price: double.parse(value!),
+                    price: int.parse(value!),
                     category: _editedProduct.category,
                   );
                 },

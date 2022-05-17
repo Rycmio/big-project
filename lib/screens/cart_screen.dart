@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/cart.dart';
 import '../providers/orders.dart';
@@ -12,6 +13,10 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+    final formatNumber = NumberFormat.simpleCurrency(
+      decimalDigits: 0,
+      locale: 'id_ID',
+    );
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -67,7 +72,7 @@ class CartScreen extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Spacer(),
-                      Text('Rp ${cart.totalAmount}'),
+                      Text(formatNumber.format(cart.totalAmount)),
                     ],
                   ),
                   SizedBox(height: 6),

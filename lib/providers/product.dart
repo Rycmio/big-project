@@ -7,7 +7,7 @@ class Product with ChangeNotifier {
   final String? id;
   final File? image;
   final String? name;
-  final double price;
+  final int price;
   bool status;
   bool serve;
   final Category? category;

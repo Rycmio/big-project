@@ -15,6 +15,10 @@ class OrderItem extends StatefulWidget {
 
 class _OrderItemState extends State<OrderItem> {
   var _expanded = false;
+  final formatNumber = NumberFormat.simpleCurrency(
+    decimalDigits: 0,
+    locale: 'id_ID',
+  );
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,7 +30,7 @@ class _OrderItemState extends State<OrderItem> {
               DateFormat('dd/MM/yyyy - hh:mm').format(widget.order.dateTime),
             ),
             subtitle: Text(
-              'Rp ${widget.order.amount}',
+              formatNumber.format(widget.order.amount),
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -62,7 +66,7 @@ class _OrderItemState extends State<OrderItem> {
                             ),
                           ),
                           Text(
-                            '${prod.quantity} x  Rp ${prod.price}',
+                            '${prod.quantity} x  ${formatNumber.format(prod.price)}',
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.grey[600],
