@@ -89,7 +89,7 @@ class CartItem extends StatelessWidget {
               ),
             ),
             title: Text(name),
-            subtitle: Text('Total: ${formatNumber.format(price) * quantity}'),
+            subtitle: Text('Total: ${formatNumber.format(price * quantity)}'),
             trailing: Text('$quantity x'),
           ),
         ),
