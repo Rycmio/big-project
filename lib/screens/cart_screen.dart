@@ -188,114 +188,115 @@ class _CartScreenState extends State<CartScreen> {
                     style: TextButton.styleFrom(
                         minimumSize: Size(double.infinity, 35)),
                     onPressed: () async {
-                      if (!(await printer.isConnected)! &&
-                          _connected == false) {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (_) {
-                              return Scaffold(
-                                body: StatefulBuilder(
-                                  builder: (BuildContext context,
-                                      StateSetter setModalState) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          const Text(
-                                              'Printer tidak terkoneksi - koneksikan terlebih dahulu'),
-                                          SizedBox(height: 10),
-                                          DropdownButton<BluetoothDevice>(
-                                            value: selectedDevice,
-                                            hint: const Text('Pilih Printer'),
-                                            onChanged: (device) {
-                                              setModalState(() {
-                                                selectedDevice = device;
-                                              });
-                                            },
-                                            items: devices
-                                                .map((e) => DropdownMenuItem(
-                                                      child: Text(e.name!),
-                                                      value: e,
-                                                    ))
-                                                .toList(),
-                                          ),
-                                          SizedBox(height: 10),
-                                          ElevatedButton(
-                                              style: TextButton.styleFrom(
-                                                  minimumSize: Size(
-                                                      double.infinity, 35)),
-                                              onPressed: () {
-                                                if (_thermalOff) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .hideCurrentSnackBar();
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        'Printer tidak menyala! - nyalakan terlebih dahulu!',
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .redAccent),
-                                                      ),
-                                                      duration:
-                                                          Duration(seconds: 2),
-                                                    ),
-                                                  );
-                                                  setModalState(() {
-                                                    return;
-                                                  });
-                                                }
-                                                if (_bluetoothOff) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .hideCurrentSnackBar();
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        'Bluetooth tidak menyala!',
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .redAccent),
-                                                      ),
-                                                      duration:
-                                                          Duration(seconds: 1),
-                                                    ),
-                                                  );
-                                                  return;
-                                                }
-                                                if (_errorThermal) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .hideCurrentSnackBar();
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      content: Text(
-                                                        'Terjadi error pada printer!',
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .redAccent),
-                                                      ),
-                                                      duration:
-                                                          Duration(seconds: 1),
-                                                    ),
-                                                  );
-                                                  return;
-                                                }
-                                                printer
-                                                    .connect(selectedDevice!);
-
-                                                Navigator.of(context).pop();
-                                                setState(() {});
-                                              },
-                                              child: const Text('Connect'))
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            });
-                      } else if (_controller.text.isEmpty) {
+                      // if (!(await printer.isConnected)! &&
+                      //     _connected == false) {
+                      //   showModalBottomSheet(
+                      //       context: context,
+                      //       builder: (_) {
+                      //         return Scaffold(
+                      //           body: StatefulBuilder(
+                      //             builder: (BuildContext context,
+                      //                 StateSetter setModalState) {
+                      //               return Padding(
+                      //                 padding: const EdgeInsets.all(8.0),
+                      //                 child: Column(
+                      //                   children: [
+                      //                     const Text(
+                      //                       'Printer tidak terkoneksi - koneksikan terlebih dahulu',
+                      //                       style: TextStyle(
+                      //                           fontWeight: FontWeight.bold),
+                      //                     ),
+                      //                     SizedBox(height: 10),
+                      //                     DropdownButton<BluetoothDevice>(
+                      //                       value: selectedDevice,
+                      //                       hint: const Text('Pilih Printer'),
+                      //                       onChanged: (device) {
+                      //                         setModalState(() {
+                      //                           selectedDevice = device;
+                      //                         });
+                      //                       },
+                      //                       items: devices
+                      //                           .map((e) => DropdownMenuItem(
+                      //                                 child: Text(e.name!),
+                      //                                 value: e,
+                      //                               ))
+                      //                           .toList(),
+                      //                     ),
+                      //                     SizedBox(height: 10),
+                      //                     ElevatedButton(
+                      //                         style: TextButton.styleFrom(
+                      //                             minimumSize: Size(
+                      //                                 double.infinity, 35)),
+                      //                         onPressed: () {
+                      //                           if (_thermalOff) {
+                      //                             ScaffoldMessenger.of(context)
+                      //                                 .hideCurrentSnackBar();
+                      //                             ScaffoldMessenger.of(context)
+                      //                                 .showSnackBar(
+                      //                               SnackBar(
+                      //                                 content: Text(
+                      //                                   'Printer tidak menyala! - nyalakan terlebih dahulu!',
+                      //                                   style: TextStyle(
+                      //                                       color: Colors
+                      //                                           .redAccent),
+                      //                                 ),
+                      //                                 duration:
+                      //                                     Duration(seconds: 2),
+                      //                               ),
+                      //                             );
+                      //                             return;
+                      //                           }
+                      //                           if (_bluetoothOff) {
+                      //                             ScaffoldMessenger.of(context)
+                      //                                 .hideCurrentSnackBar();
+                      //                             ScaffoldMessenger.of(context)
+                      //                                 .showSnackBar(
+                      //                               SnackBar(
+                      //                                 content: Text(
+                      //                                   'Bluetooth tidak menyala!',
+                      //                                   style: TextStyle(
+                      //                                       color: Colors
+                      //                                           .redAccent),
+                      //                                 ),
+                      //                                 duration:
+                      //                                     Duration(seconds: 1),
+                      //                               ),
+                      //                             );
+                      //                             return;
+                      //                           }
+                      //                           if (_errorThermal) {
+                      //                             ScaffoldMessenger.of(context)
+                      //                                 .hideCurrentSnackBar();
+                      //                             ScaffoldMessenger.of(context)
+                      //                                 .showSnackBar(
+                      //                               SnackBar(
+                      //                                 content: Text(
+                      //                                   'Terjadi error pada printer!',
+                      //                                   style: TextStyle(
+                      //                                       color: Colors
+                      //                                           .redAccent),
+                      //                                 ),
+                      //                                 duration:
+                      //                                     Duration(seconds: 1),
+                      //                               ),
+                      //                             );
+                      //                             return;
+                      //                           }
+                      //                           printer
+                      //                               .connect(selectedDevice!);
+                      //                           Navigator.of(context).pop();
+                      //                         },
+                      //                         child: const Text('Connect'))
+                      //                   ],
+                      //                 ),
+                      //               );
+                      //             },
+                      //           ),
+                      //         );
+                      //       });
+                      //   return;
+                      // }
+                      if (_controller.text.isEmpty) {
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -307,8 +308,8 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         );
                         return;
-                      } else if (int.parse(_controller.text) <
-                          cart.totalAmount) {
+                      }
+                      if (int.parse(_controller.text) < cart.totalAmount) {
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
