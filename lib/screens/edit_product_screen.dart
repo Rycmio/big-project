@@ -132,7 +132,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
         ),
         title: Text(
           'Edit Produk',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Quicksand',
+            fontWeight: FontWeight.w600,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,

@@ -25,9 +25,16 @@ class _OrderItemState extends State<OrderItem> {
       margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 6, top: 6, right: 6),
+            child: Text(
+              widget.order.id,
+              textAlign: TextAlign.start,
+            ),
+          ),
           ListTile(
             title: Text(
-              DateFormat('dd/MM/yyyy - hh:mm').format(widget.order.dateTime),
+              DateFormat('dd/MM/yyyy-hh:mm').format(widget.order.dateTime),
             ),
             subtitle: Text(
               formatNumber.format(widget.order.amount),

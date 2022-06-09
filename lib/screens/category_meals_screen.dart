@@ -5,8 +5,11 @@ import 'package:provider/provider.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/products_gird.dart';
 import '../widgets/badge.dart';
+import '../widgets/unlogin_drawer.dart';
 import '../screens/cart_screen.dart';
+import '../screens/login_screen.dart';
 import '../providers/cart.dart';
+import '../providers/login_out.dart';
 import '../utils/category_enum.dart' as cat;
 
 class CategoryMealsScreen extends StatefulWidget {
@@ -22,12 +25,15 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen>
   @override
   @override
   Widget build(BuildContext context) {
+    print('Heigh : ' + MediaQuery.of(context).size.height.toString());
+    print('width : ' + MediaQuery.of(context).size.width.toString());
     GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
     TabController _tabController = TabController(length: 3, vsync: this);
+    var _isLoggedIn = Provider.of<LogInOut>(context);
 
     return Scaffold(
       key: _globalKey,
-      drawer: MainDrawer(),
+      drawer: _isLoggedIn.isLoggedIn ? MainDrawer() : UnLoginDrawer(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -65,12 +71,30 @@ class _CategoryMealsScreenState extends State<CategoryMealsScreen>
                   ),
                 ),
                 PopupMenuButton(
+                  onSelected: (result) {
+                    if (result == 0) {
+                      Navigator.of(context).pushNamed(LoginScreen.routeName);
+                    }
+                    if (result == 1) {
+                      setState(() {
+                        _isLoggedIn.isLoggedIn = false;
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Berhasil Logout'),
+                          duration: Duration(seconds: 1),
+                        ),
+                      );
+                    }
+                  },
                   icon: Icon(
                     Icons.more_vert,
                   ),
                   itemBuilder: (_) => [
                     PopupMenuItem(
-                      child: Text('Login'),
+                      child: Text(_isLoggedIn.isLoggedIn ? 'Logout' : 'Login'),
+                      value: _isLoggedIn.isLoggedIn ? 1 : 0,
                     ),
                   ],
                 ),

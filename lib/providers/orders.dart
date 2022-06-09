@@ -23,14 +23,14 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
-  void addOrder(List<CartItemData> cartProducts, double total) {
+  void addOrder(List<CartItemData> cartProducts, double total, String code) {
     if (total == 0) {
       return;
     }
     _orders.insert(
       0,
       OrderItem(
-        id: DateTime.now().toString(),
+        id: code,
         amount: total,
         products: cartProducts,
         dateTime: DateTime.now(),

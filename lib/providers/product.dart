@@ -9,7 +9,6 @@ class Product with ChangeNotifier {
   final String? name;
   final int price;
   bool status;
-  bool serve;
   final Category? category;
 
   Product({
@@ -18,7 +17,6 @@ class Product with ChangeNotifier {
     required this.name,
     required this.price,
     this.status = true,
-    this.serve = false,
     required this.category,
   });
 }

@@ -18,13 +18,20 @@ class ProductsGrid extends StatelessWidget {
     final filter = Provider.of<Products>(context, listen: false)
         .filterProduct(categoryProduct);
 
+    var _height = 0.0;
+    if (MediaQuery.of(context).size.height > 678.0) {
+      _height = 0.75;
+    } else {
+      _height = 0.94;
+    }
+
     return GridView.builder(
       padding: EdgeInsets.zero,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 200,
         childAspectRatio: MediaQuery.of(context).size.width /
             MediaQuery.of(context).size.height /
-            0.94,
+            _height,
         crossAxisSpacing: 0,
         mainAxisSpacing: 0,
       ),
